@@ -1,3 +1,5 @@
+
+
 # LeetCode刷题笔记
 
 # 一. 树
@@ -111,10 +113,6 @@ func doSelect(start,end int) []*TreeNode {
 
 
 
-
-
-
-
 # 二.动态规划
 
 1. 确定dp数组以及下标含义
@@ -129,6 +127,31 @@ func doSelect(start,end int) []*TreeNode {
 
 ```
 给你一个整数 n ，求恰由 n 个节点组成且节点值从 1 到 n 互不相同的 二叉搜索树 有多少种？返回满足题意的二叉搜索树的种数。
+```
+
+1. dp数组 dp[i]为整数n的二叉搜索树种数
+
+2. dp[i] += dp[j]  * dp[i-j-1]
+
+3. dp[0] = 1
+
+4. 遍历顺序是节点数
+
+   | 下标i | 0    | 1    | 2    | 3    |
+   | ----- | ---- | ---- | ---- | ---- |
+   | dp[i] | 1    | 1    | 2    | 5    |
+
+```go
+func numTrees(n int) int {
+    dp := make([]int,n+1)
+    dp[0] = 1
+    for i:=1; i<n+1; i++ {
+        for j:=0; j<i; j++{
+            dp[i] += dp[j] * dp[i-j-1]
+        }
+    }  
+    return dp[n]
+}
 ```
 
 
