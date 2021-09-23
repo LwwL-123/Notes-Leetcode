@@ -56,6 +56,8 @@ func inorderTraversal(root *TreeNode) []int {
 }
 ```
 
+
+
 ### 2.[不同的二叉搜索树 II](https://leetcode-cn.com/problems/unique-binary-search-trees-ii/)
 
 ```
@@ -108,6 +110,83 @@ func doSelect(start,end int) []*TreeNode {
     return allTrees
 }
 ```
+
+
+
+### 3.[验证二叉搜索树](https://leetcode-cn.com/problems/validate-binary-search-tree/)
+
+陷阱：以下这种递归的写法是错误的，单纯的比较左右节点的值与根节点的值。**而右节点的左节点有可能会小于根节点的值**
+
+![二叉搜索树](https://gitee.com/lzw657434763/pictures/raw/master/Blog/20210923105952.png)
+
+```GO
+func isValidBST(root *TreeNode) bool {
+    if root == nil {
+        return true
+    }
+
+    if (root.Left.Val >= root.Val) {
+        return false;
+    }
+
+    if (root.Right.Val <= root.Val) {
+        return false;
+    }
+    
+    return isValidBST(root.Left)&&isValidBST(root.Right)
+}
+```
+
+
+
+因为搜索二叉树的中序遍历一定是递增的，所以可以采用中序遍历这个二叉树进行判断
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func isValidBST(root *TreeNode) bool {
+    if root == nil {
+        return true
+    }
+
+    stack := []*TreeNode{}
+  	//左节点入栈
+    for root != nil {
+        stack = append(stack,root)
+        root = root.Left
+    }
+
+    tmp := math.MinInt64
+		
+  	//出栈，遍历右节点的左节点
+    for len(stack) != 0 {
+        cur := stack[len(stack)-1]
+        stack = stack[:len(stack)-1]
+        if( tmp!= math.MinInt64 && tmp >= cur.Val){
+            return false
+        }else{
+            tmp = cur.Val
+        }
+
+        cur = cur.Right
+        for cur != nil {
+            stack = append(stack,cur)
+            cur = cur.Left
+        }
+    }
+    return true
+}
+```
+
+
+
+
 
 
 
