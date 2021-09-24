@@ -4,7 +4,11 @@
 
 # 一. 树
 
-### 1. [二叉树的中序遍历](https://leetcode-cn.com/problems/binary-tree-inorder-traversal/)
+### 1.中序遍历
+
+适用：二叉搜索树
+
+#### 1.1 [二叉树的中序遍历](https://leetcode-cn.com/problems/binary-tree-inorder-traversal/)
 
 递归
 
@@ -36,21 +40,21 @@ func inorderTraversal(root *TreeNode) []int {
     result := []int{}    
     stack := []*TreeNode{}
 
-    for root != nil {
-        stack = append(stack,root)
-        root = root.Left
-    }
-
-    for len(stack) != 0 {
-        node := stack[len(stack)-1]
+    node := root
+    // 当node不为空或者stack不为空
+    for node != nil || len(stack) != 0 {
+        // 入栈
+      	for node != nil {
+            stack = append(stack,node)
+            node = node.Left
+        }
+        // 获得栈顶元素，出栈
+        node = stack[len(stack)-1]
         stack = stack[:len(stack)-1]
         result = append(result,node.Val)
 
         node = node.Right
-        for node != nil {
-            stack = append(stack,node)
-            node = node.Left
-        }
+
     }
     return result
 }
@@ -58,7 +62,7 @@ func inorderTraversal(root *TreeNode) []int {
 
 
 
-### 2.[不同的二叉搜索树 II](https://leetcode-cn.com/problems/unique-binary-search-trees-ii/)
+#### 1.2 [不同的二叉搜索树 II](https://leetcode-cn.com/problems/unique-binary-search-trees-ii/)
 
 ```
 给你一个整数 n ，请你生成并返回所有由 n 个节点组成且节点值从 1 到 n 互不相同的不同 二叉搜索树 。可以按 任意顺序 返回答案。
@@ -113,7 +117,7 @@ func doSelect(start,end int) []*TreeNode {
 
 
 
-### 3.[验证二叉搜索树](https://leetcode-cn.com/problems/validate-binary-search-tree/)
+#### 1.3.[验证二叉搜索树](https://leetcode-cn.com/problems/validate-binary-search-tree/)
 
 陷阱：以下这种递归的写法是错误的，单纯的比较左右节点的值与根节点的值。**而右节点的左节点有可能会小于根节点的值**
 
@@ -186,9 +190,50 @@ func isValidBST(root *TreeNode) bool {
 
 
 
+#### 1.4 [恢复二叉搜索树](https://leetcode-cn.com/problems/recover-binary-search-tree/)
 
+中序遍历，从栈顶弹出时记录，与下一个栈顶节点做比较，如果大于下一个节点，则不符合中序遍历搜索二叉树的递增规则，x,y 进行记录两个节点
 
+例：[1,2,4,3]则交换3和4  如果是[1,4,3,2]则会把x记录为第一个不符合的4，y为3，后续不更新x，只更新y，将y更新为第二个不符合的数为2
 
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func recoverTree(root *TreeNode)  {
+    stack := []*TreeNode{}
+    var x, y, pre *TreeNode
+
+    current := root
+    for current != nil || len(stack) > 0 {
+        for current != nil {
+            stack = append(stack,current)
+            current = current.Left
+        }
+        current = stack[len(stack)-1]
+        stack = stack[:len(stack)-1]
+
+        if pre != nil && pre.Val > current.Val{
+            y = current
+            if x == nil{
+                x = pre
+            }else{
+                break
+            }
+        }
+
+        pre = current
+        current = current.Right
+    }
+
+    x.Val , y.Val = y.Val, x.Val
+}
+```
 
 
 
@@ -323,6 +368,41 @@ func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
         num = num/10
     }
     return result.Next
+}
+```
+
+
+
+
+
+# **模板总结**
+
+## 1. 中序遍历（迭代）
+
+适用：二叉搜索树
+
+```go
+func inorderTraversal(root *TreeNode) []int {
+    result := []int{}    
+    stack := []*TreeNode{}
+
+    node := root
+    // 当node不为空或者stack不为空
+    for node != nil || len(stack) != 0 {
+        // 入栈
+      	for node != nil {
+            stack = append(stack,node)
+            node = node.Left
+        }
+        // 获得栈顶元素，出栈
+        node = stack[len(stack)-1]
+        stack = stack[:len(stack)-1]
+        result = append(result,node.Val)
+
+        node = node.Right
+
+    }
+    return result
 }
 ```
 
