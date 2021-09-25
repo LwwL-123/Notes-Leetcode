@@ -4,11 +4,11 @@
 
 # 一. 树
 
-### 1.中序遍历
+## 1.中序遍历
 
 适用：二叉搜索树
 
-#### 1.1 [二叉树的中序遍历](https://leetcode-cn.com/problems/binary-tree-inorder-traversal/)
+### 1.1 [二叉树的中序遍历](https://leetcode-cn.com/problems/binary-tree-inorder-traversal/)
 
 递归
 
@@ -62,7 +62,7 @@ func inorderTraversal(root *TreeNode) []int {
 
 
 
-#### 1.2 [不同的二叉搜索树 II](https://leetcode-cn.com/problems/unique-binary-search-trees-ii/)
+### 1.2 [不同的二叉搜索树 II](https://leetcode-cn.com/problems/unique-binary-search-trees-ii/)
 
 ```
 给你一个整数 n ，请你生成并返回所有由 n 个节点组成且节点值从 1 到 n 互不相同的不同 二叉搜索树 。可以按 任意顺序 返回答案。
@@ -117,7 +117,7 @@ func doSelect(start,end int) []*TreeNode {
 
 
 
-#### 1.3.[验证二叉搜索树](https://leetcode-cn.com/problems/validate-binary-search-tree/)
+### 1.3.[验证二叉搜索树](https://leetcode-cn.com/problems/validate-binary-search-tree/)
 
 陷阱：以下这种递归的写法是错误的，单纯的比较左右节点的值与根节点的值。**而右节点的左节点有可能会小于根节点的值**
 
@@ -190,7 +190,7 @@ func isValidBST(root *TreeNode) bool {
 
 
 
-#### 1.4 [恢复二叉搜索树](https://leetcode-cn.com/problems/recover-binary-search-tree/)
+### 1.4 [恢复二叉搜索树](https://leetcode-cn.com/problems/recover-binary-search-tree/)
 
 中序遍历，从栈顶弹出时记录，与下一个栈顶节点做比较，如果大于下一个节点，则不符合中序遍历搜索二叉树的递增规则，x,y 进行记录两个节点
 
@@ -232,6 +232,96 @@ func recoverTree(root *TreeNode)  {
     }
 
     x.Val , y.Val = y.Val, x.Val
+}
+```
+
+
+
+## 2. 递归
+
+二叉树的遍历框架
+
+```go
+func BST(root *TreeNode,target int) {
+    if (root.val == target)
+        // 找到目标，做点什么
+    if (root.val < target) 
+        BST(root.right, target);
+    if (root.val > target)
+        BST(root.left, target);
+}
+
+```
+
+### 2.1 [相同的树](https://leetcode-cn.com/problems/same-tree/)
+
+判断两个二叉树是否相同
+
+```go
+func isSameTree(p *TreeNode, q *TreeNode) bool {
+  	// 都为空，则相同
+    if p==nil && q==nil {
+        return true
+    }
+		// 一个为空，一个不为空，显然不同
+    if p==nil || q==nil {
+        return false
+    }
+    // 节点值不一样，不同
+    if p.Val != q.Val {
+        return false
+    }
+
+    return isSameTree(p.Left,q.Left)&&isSameTree(p.Right,q.Right)
+}
+```
+
+### 2.2 [验证二叉搜索树](https://leetcode-cn.com/problems/validate-binary-search-tree/)( 与1.3相同 )
+
+注意框架思维
+
+```go
+func isValidBST(root *TreeNode) bool {
+    return validBST(root,math.MinInt64,math.MaxInt64)
+}
+
+func validBST(root *TreeNode,min,max int) bool{
+    //递归结束条件
+    if root==nil{
+        return true
+    }
+    // 判断节点的值是不是在区间呢，不是的话就false结束
+    if root.Val<=min || root.Val>=max{
+        return false
+    }
+    //左递归 最大值改为当前节点值
+    //右递归 最小值改为当前节点值
+    return validBST(root.Left,min,root.Val) && validBST(root.Right,root.Val,max)
+}
+```
+
+
+
+### 2.3 [对称二叉树](https://leetcode-cn.com/problems/symmetric-tree/)
+
+```go
+// 输入值只有一个root，多用一个函数
+func isSymmetric(root *TreeNode) bool {
+    return check(root.Left,root.Right)
+}
+
+func check(l,r *TreeNode) bool {
+    if l==nil && r==nil {
+        return true
+    }
+    if l==nil || r==nil{
+        return false
+    }
+    if l.Val != r.Val { 
+        return false
+    }
+
+    return check(l.Left,r.Right)&&check(l.Right,r.Left)
 }
 ```
 
@@ -403,6 +493,19 @@ func inorderTraversal(root *TreeNode) []int {
 
     }
     return result
+}
+```
+
+## 2. 递归
+
+```GO
+func BST(root *TreeNode,target int) {
+    if (root.val == target)
+        // 找到目标，做点什么
+    if (root.val < target) 
+        BST(root.right, target);
+    if (root.val > target)
+        BST(root.left, target);
 }
 ```
 
