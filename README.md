@@ -327,6 +327,50 @@ func check(l,r *TreeNode) bool {
 
 
 
+## 3. 层次遍历BFS
+
+
+
+### 3.1 [二叉树的层序遍历](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/)
+
+```go
+func levelOrder(root *TreeNode) [][]int {
+    result := [][]int{}
+
+    if root == nil {
+        return result
+    }
+
+    //创建队列，将root节点加入
+    queue := []*TreeNode{}
+    queue = append(queue,root)
+    for len(queue)!=0 {
+        tmp := []int{}
+        //当前队列中的元素个数，为此层的元素个数
+        lenth := len(queue)
+        //遍历此层所有元素
+        for i:=0;i<lenth;i++{
+            //出队
+            node := queue[i]
+            tmp = append(tmp,node.Val)
+            if node.Left!=nil{
+                queue = append(queue,node.Left)
+            }
+            if node.Right!=nil {
+                queue = append(queue,node.Right)
+            }
+        }
+        queue = queue[lenth:]
+        result = append(result,tmp)
+    }
+    return result
+}
+```
+
+
+
+
+
 # 二.动态规划
 
 1. 确定dp数组以及下标含义
@@ -506,6 +550,50 @@ func BST(root *TreeNode,target int) {
         BST(root.right, target);
     if (root.val > target)
         BST(root.left, target);
+}
+```
+
+## 3. 层次遍历
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func levelOrder(root *TreeNode) [][]int {
+    result := [][]int{}
+
+    if root == nil {
+        return result
+    }
+
+    //创建队列，将root节点加入
+    queue := []*TreeNode{}
+    queue = append(queue,root)
+    for len(queue)!=0 {
+        tmp := []int{}
+        //当前队列中的元素个数，为此层的元素个数
+        lenth := len(queue)
+        //遍历此层所有元素
+        for i:=0;i<lenth;i++{
+            //出队
+            node := queue[i]
+            tmp = append(tmp,node.Val)
+            if node.Left!=nil{
+                queue = append(queue,node.Left)
+            }
+            if node.Right!=nil {
+                queue = append(queue,node.Right)
+            }
+        }
+        queue = queue[lenth:]
+        result = append(result,tmp)
+    }
+    return result
 }
 ```
 
