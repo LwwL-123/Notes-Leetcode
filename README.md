@@ -369,6 +369,53 @@ func levelOrder(root *TreeNode) [][]int {
 
 
 
+### 3.2 [二叉树的锯齿形层序遍历](https://leetcode-cn.com/problems/binary-tree-zigzag-level-order-traversal/)
+
+设置一个是否翻转数组的变量，如果需要反转，临时数组反向插入
+
+```go
+func zigzagLevelOrder(root *TreeNode) [][]int {
+    var res [][]int
+    if root == nil {
+        return res
+    }
+
+    // 创建队列
+    queue := make([]*TreeNode, 0)
+    // root入队
+    queue = append(queue,root)
+    isLeftStart := true
+    for len(queue) != 0 {
+        length := len(queue)
+        //当前队列中的元素个数，为此层的元素个数
+        tmp := make([]int, length)
+        //遍历此层所有元素
+        for i := 0; i < length; i++ {
+            //取出此层的节点，判断是否需要反转
+            node := queue[i]
+            if isLeftStart {
+								tmp[i] = node.Val
+						} else {
+								tmp[length-i-1] = node.Val
+						}
+            // 入队
+            if node.Left != nil {
+                queue = append(queue,node.Left)
+            }
+            if node.Right != nil {
+                queue = append(queue,node.Right)
+            }
+        }
+        queue = queue[length:]
+        res = append(res,tmp)
+        isLeftStart = !isLeftStart
+    }
+    return res
+}
+```
+
+
+
 
 
 # 二.动态规划
@@ -565,35 +612,37 @@ func BST(root *TreeNode,target int) {
  * }
  */
 func levelOrder(root *TreeNode) [][]int {
-    result := [][]int{}
-
+    var res [][]int
     if root == nil {
-        return result
+        return res
     }
 
-    //创建队列，将root节点加入
-    queue := []*TreeNode{}
+    // 创建队列
+    queue := make([]*TreeNode, 0)
+    // root入队
     queue = append(queue,root)
-    for len(queue)!=0 {
-        tmp := []int{}
+
+    for len(queue) != 0 {
+        length := len(queue)
         //当前队列中的元素个数，为此层的元素个数
-        lenth := len(queue)
+        var tmp []int
         //遍历此层所有元素
-        for i:=0;i<lenth;i++{
-            //出队
+        for i := 0; i < length; i++ {
+             //取出此层的节点，将下一层入队
             node := queue[i]
             tmp = append(tmp,node.Val)
-            if node.Left!=nil{
+            if node.Left != nil {
                 queue = append(queue,node.Left)
             }
-            if node.Right!=nil {
+            if node.Right != nil {
                 queue = append(queue,node.Right)
             }
         }
-        queue = queue[lenth:]
-        result = append(result,tmp)
+      	//出队
+        queue = queue[length:]
+        res = append(res,tmp)
     }
-    return result
+    return res
 }
 ```
 
