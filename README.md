@@ -327,6 +327,31 @@ func check(l,r *TreeNode) bool {
 
 
 
+### 2.4  [二叉树的最大深度](https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/)
+
+```go
+func maxDepth(root *TreeNode) int {
+    if root == nil {
+        return 0
+    } 
+
+    if root.Left == nil && root.Right == nil {
+        return 1
+    }
+
+    left := maxDepth(root.Left)
+    right := maxDepth(root.Right)   
+
+    if left >right {
+        return 1 + left
+    }else {
+        return 1 +right
+    }
+}
+```
+
+
+
 ## 3. 层次遍历BFS
 
 
@@ -415,6 +440,35 @@ func zigzagLevelOrder(root *TreeNode) [][]int {
 ```
 
 
+
+### 3.3 [二叉树的最大深度](https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/) (与2.4相同)
+
+```go
+func maxDepth(root *TreeNode) int {
+    n := 0
+    if root == nil {
+        return n
+    }
+    var queue []*TreeNode
+    queue = append(queue,root)
+
+    for len(queue) != 0 {
+        length := len(queue)
+        for i := 0; i < length; i++ {
+            node := queue[i]
+            if node.Left != nil {
+                queue = append(queue,node.Left)
+            }
+            if node.Right != nil {
+                queue = append(queue,node.Right)
+            }
+        }
+        queue = queue[length:]
+        n++
+    }
+    return n
+}
+```
 
 
 
