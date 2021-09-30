@@ -352,9 +352,35 @@ func maxDepth(root *TreeNode) int {
 
 
 
+### 2.5 [从前序与中序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
+
+前序遍历第一个为根节点，在中序遍历中找到根节点，左边为左子树，右边为右子树，递归遍历整棵树
+
+```go
+func buildTree(preorder []int, inorder []int) *TreeNode {
+    if len(preorder) == 0 && len(inorder) == 0 {
+        return nil
+    }
+
+    res := TreeNode{preorder[0],nil,nil}
+    i := 0
+    for ; i < len(inorder); i++ {
+        if inorder[i] == preorder[0]{
+            break
+        }
+    }
+
+    res.Left = buildTree(preorder[1:i+1],inorder[:i])
+    res.Right = buildTree(preorder[i+1:],inorder[i+1:])
+    return &res
+}
+```
+
+
+
+
+
 ## 3. 层次遍历BFS
-
-
 
 ### 3.1 [二叉树的层序遍历](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/)
 
