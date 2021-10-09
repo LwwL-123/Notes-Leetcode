@@ -362,7 +362,7 @@ func buildTree(preorder []int, inorder []int) *TreeNode {
         return nil
     }
 
-    res := TreeNode{preorder[0],nil,nil}
+    res := &TreeNode{preorder[0],nil,nil}
     i := 0
     for ; i < len(inorder); i++ {
         if inorder[i] == preorder[0]{
@@ -372,11 +372,34 @@ func buildTree(preorder []int, inorder []int) *TreeNode {
 
     res.Left = buildTree(preorder[1:i+1],inorder[:i])
     res.Right = buildTree(preorder[i+1:],inorder[i+1:])
-    return &res
+    return res
 }
 ```
 
 
+
+### 2.6 [从中序与后序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/)
+
+```go
+func buildTree(inorder []int, postorder []int) *TreeNode {
+
+    if len(inorder) == 0 && len(postorder) == 0 {
+        return nil
+    }
+
+    l := len(postorder)-1
+    res := &TreeNode{Val:postorder[l]}
+    i :=0
+    for ;i<len(inorder);i++{
+      if inorder[i] == postorder[l]{
+        break
+      }
+    }
+    res.Left = buildTree(inorder[:i],postorder[:i])
+    res.Right = buildTree(inorder[i+1:],postorder[i:l])
+    return res
+}
+```
 
 
 
