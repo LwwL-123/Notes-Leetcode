@@ -403,6 +403,23 @@ func buildTree(inorder []int, postorder []int) *TreeNode {
 
 
 
+### 2.7 [将有序数组转换为二叉搜索树](https://leetcode-cn.com/problems/convert-sorted-array-to-binary-search-tree/)
+
+```go
+func sortedArrayToBST(nums []int) *TreeNode {
+    if len(nums) == 0 {
+        return nil
+    }
+    res := &TreeNode{nums[len(nums)/2],nil,nil}
+    res.Left = sortedArrayToBST(nums[:len(nums)/2])
+    res.Right = sortedArrayToBST(nums[len(nums)/2+1:])
+
+    return res
+}
+```
+
+
+
 ## 3. 层次遍历BFS
 
 ### 3.1 [二叉树的层序遍历](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/)
