@@ -405,6 +405,10 @@ func buildTree(inorder []int, postorder []int) *TreeNode {
 
 ### 2.7 [将有序数组转换为二叉搜索树](https://leetcode-cn.com/problems/convert-sorted-array-to-binary-search-tree/)
 
+![image-20211012155647326](https://gitee.com/lzw657434763/pictures/raw/master/Blog/20211012155647.png)
+
+数组的中间节点为根节点，然后将左子树，右子树分别进入递归，构造二叉搜索树
+
 ```go
 func sortedArrayToBST(nums []int) *TreeNode {
     if len(nums) == 0 {
@@ -417,6 +421,40 @@ func sortedArrayToBST(nums []int) *TreeNode {
     return res
 }
 ```
+
+
+
+### 2.8 [有序链表转换二叉搜索树](https://leetcode-cn.com/problems/convert-sorted-list-to-binary-search-tree/)
+
+将有序链表转换为有序数组，然后使用2.7中的方法
+
+```go
+func sortedListToBST(head *ListNode) *TreeNode {
+    var nums []int
+    
+    for head!=nil {
+        nums = append(nums,head.Val)
+        head = head.Next
+    }
+
+    return dfs(nums)
+}
+
+
+func dfs(nums []int) *TreeNode{
+
+    if len(nums) == 0 {
+        return nil
+    }
+
+    res := &TreeNode{nums[len(nums)/2],nil,nil}
+    res.Left = dfs(nums[:len(nums)/2])
+    res.Right = dfs(nums[len(nums)/2+1:])
+    return res
+}
+```
+
+
 
 
 
