@@ -253,7 +253,9 @@ func BST(root *TreeNode,target int) {
 
 ```
 
-### 2.1 [相同的树](https://leetcode-cn.com/problems/same-tree/)
+### 2.1 其他
+
+#### [相同的树](https://leetcode-cn.com/problems/same-tree/)
 
 判断两个二叉树是否相同
 
@@ -276,7 +278,7 @@ func isSameTree(p *TreeNode, q *TreeNode) bool {
 }
 ```
 
-### 2.2 [验证二叉搜索树](https://leetcode-cn.com/problems/validate-binary-search-tree/)( 与1.3相同 )
+#### [验证二叉搜索树](https://leetcode-cn.com/problems/validate-binary-search-tree/)( 与1.3相同 )
 
 注意框架思维
 
@@ -302,7 +304,7 @@ func validBST(root *TreeNode,min,max int) bool{
 
 
 
-### 2.3 [对称二叉树](https://leetcode-cn.com/problems/symmetric-tree/)
+#### [对称二叉树](https://leetcode-cn.com/problems/symmetric-tree/)
 
 ```go
 // 输入值只有一个root，多用一个函数
@@ -327,32 +329,9 @@ func check(l,r *TreeNode) bool {
 
 
 
-### 2.4  [二叉树的最大深度](https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/)
-
-```go
-func maxDepth(root *TreeNode) int {
-    if root == nil {
-        return 0
-    } 
-
-    if root.Left == nil && root.Right == nil {
-        return 1
-    }
-
-    left := maxDepth(root.Left)
-    right := maxDepth(root.Right)   
-
-    if left >right {
-        return 1 + left
-    }else {
-        return 1 +right
-    }
-}
-```
 
 
-
-### 2.5 [从前序与中序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
+#### [从前序与中序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
 
 前序遍历第一个为根节点，在中序遍历中找到根节点，左边为左子树，右边为右子树，递归遍历整棵树
 
@@ -378,7 +357,7 @@ func buildTree(preorder []int, inorder []int) *TreeNode {
 
 
 
-### 2.6 [从中序与后序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/)
+#### [从中序与后序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/)
 
 ```go
 func buildTree(inorder []int, postorder []int) *TreeNode {
@@ -403,7 +382,7 @@ func buildTree(inorder []int, postorder []int) *TreeNode {
 
 
 
-### 2.7 [将有序数组转换为二叉搜索树](https://leetcode-cn.com/problems/convert-sorted-array-to-binary-search-tree/)
+#### [将有序数组转换为二叉搜索树](https://leetcode-cn.com/problems/convert-sorted-array-to-binary-search-tree/)
 
 ![image-20211012155647326](https://gitee.com/lzw657434763/pictures/raw/master/Blog/20211012155647.png)
 
@@ -424,7 +403,7 @@ func sortedArrayToBST(nums []int) *TreeNode {
 
 
 
-### 2.8 [有序链表转换二叉搜索树](https://leetcode-cn.com/problems/convert-sorted-list-to-binary-search-tree/)
+#### [有序链表转换二叉搜索树](https://leetcode-cn.com/problems/convert-sorted-list-to-binary-search-tree/)
 
 将有序链表转换为有序数组，然后使用2.7中的方法
 
@@ -451,6 +430,73 @@ func dfs(nums []int) *TreeNode{
     res.Left = dfs(nums[:len(nums)/2])
     res.Right = dfs(nums[len(nums)/2+1:])
     return res
+}
+```
+
+
+
+### 2.2 二叉树的高度
+
+#### [104. 二叉树的最大深度](https://leetcode-cn.com/problems/maximum-depth-of-binary-tree/)
+
+```go
+func maxDepth(root *TreeNode) int {
+    if root == nil {
+        return 0
+    } 
+
+    if root.Left == nil && root.Right == nil {
+        return 1
+    }
+
+    left := maxDepth(root.Left)
+    right := maxDepth(root.Right)   
+
+    if left >right {
+        return 1 + left
+    }else {
+        return 1 +right
+    }
+}
+```
+
+
+
+#### [110. 平衡二叉树](https://leetcode-cn.com/problems/balanced-binary-tree/)
+
+```go
+func isBalanced(root *TreeNode) bool {
+    tmp := true
+    isBool(root,&tmp)  
+    return tmp
+}
+
+func isBool(root *TreeNode,tmp *bool) int {
+    if root == nil {
+        return 0
+    }
+
+    l := isBool(root.Left,tmp)
+    r := isBool(root.Right,tmp)
+
+    // 就比求二叉树多了以下代码,判断左右子树的深度的绝对值是否大于1
+	if abs(l, r) > 1 {
+		*tmp = false
+	}
+
+    if l >r {
+        return 1 + l
+    }else {
+        return 1 + r
+    }
+}
+
+func abs(a int, b int) int{
+    if a > b {
+        return a - b
+    }else{
+        return b - a
+    }
 }
 ```
 
