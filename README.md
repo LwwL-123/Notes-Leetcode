@@ -15,7 +15,7 @@
 ```go
 var result []int
 func inorderTraversal(root *TreeNode) []int {
-    result = []int{}
+  	result := []int{}
     order(root)
     return result
 }
@@ -302,7 +302,7 @@ func validBST(root *TreeNode,min,max int) bool{
 }
 ```
 
-
+-
 
 #### [对称二叉树](https://leetcode-cn.com/problems/symmetric-tree/)
 
@@ -617,6 +617,76 @@ func maxDepth(root *TreeNode) int {
         n++
     }
     return n
+}
+```
+
+
+
+## 4. 深度遍历DFS
+
+#### [113. 路径总和 II](https://leetcode-cn.com/problems/path-sum-ii/)
+
+给你二叉树的根节点 root 和一个整数目标和 targetSum ，找出所有 从根节点到叶子节点 路径总和等于给定目标和的路径。
+
+```go
+func pathSum(root *TreeNode, targetSum int) [][]int {
+    res := [][]int{}
+    tmp := []int{}
+
+    return dfs(res,tmp,root,targetSum)
+    
+}
+
+func dfs(res [][]int,tmp []int,root *TreeNode,targetSum int) [][]int{
+    if root == nil {
+        return res
+    }
+
+    targetSum -= root.Val
+    tmp = append(tmp,root.Val)
+
+    if root.Right==nil && root.Left==nil {
+        if targetSum == 0 {
+            slice := make([]int,len(tmp))
+	        copy(slice[0:],tmp[0:])
+            res = append(res,slice)
+        }
+        return res
+    }
+
+    res = dfs(res,tmp,root.Left,targetSum)
+    res = dfs(res,tmp,root.Right,targetSum)
+
+    
+    return res
+}
+```
+
+要记着切片是底层数组的视图
+
+res 是什么，res 是一个 指针区间 的集合，当我们得到一个 path 之后，就直接将 path 放入了 res 中，但实际放入的是一个地址段，在之后的遍历中， 如果不发生扩容操作的话，path 指向的地址段依然是之前的地址段，对 path 代表的值进行修改，那么这个地址段代表的具体数字也会发生改变，所以输出的 res 也会发生改变
+
+```go
+func TestRUn(t *testing.T)  {
+   tmp := []int{1,2,3,4,5,6}
+   slice := tmp[0:3]
+   slice2 := make([]int,len(tmp[0:3]))
+   copy(slice2,tmp[0:3])
+
+   fmt.Println(tmp)
+   fmt.Println(slice)
+
+   tmp[0] = 10
+   tmp[1] = 20
+  
+   fmt.Println(tmp)
+   fmt.Println(slice)
+   fmt.Println(slice2)
+   //[1 2 3 4 5 6]
+   //[1 2 3]
+   //[10 20 3 4 5 6]
+   //[10 20 3]
+   //[1 2 3]
 }
 ```
 
