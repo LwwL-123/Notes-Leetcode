@@ -920,3 +920,25 @@ func levelOrder(root *TreeNode) [][]int {
 }
 ```
 
+
+
+## 4. 前序遍历
+
+```go
+var res []int
+func preorderTraversal(root *TreeNode) []int {
+    res = []int{}
+    dfs(root)
+    return res
+}
+
+func dfs(node *TreeNode){
+    if node == nil {
+        return 
+    }
+    res = append(res,node.Val)
+    dfs(node.Left)
+    dfs(node.Right)
+} 
+```
+
