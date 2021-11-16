@@ -624,7 +624,7 @@ func maxDepth(root *TreeNode) int {
 
 ## 4. 深度遍历DFS
 
-#### [113. 路径总和 II](https://leetcode-cn.com/problems/path-sum-ii/)
+### [113. 路径总和 II](https://leetcode-cn.com/problems/path-sum-ii/)
 
 给你二叉树的根节点 root 和一个整数目标和 targetSum ，找出所有 从根节点到叶子节点 路径总和等于给定目标和的路径。
 
@@ -687,6 +687,40 @@ func TestRUn(t *testing.T)  {
    //[10 20 3 4 5 6]
    //[10 20 3]
    //[1 2 3]
+}
+```
+
+## 5. Morris遍历
+
+### [114. 二叉树展开为链表](https://leetcode-cn.com/problems/flatten-binary-tree-to-linked-list/)
+
+如果当前节点存在左侧子树，将左侧子树的 **右侧链** **全部插入到当前节点右侧**
+
+然后根节点向后移动
+
+![image-20211116113912321](https://gitee.com/lzw657434763/pictures/raw/master/Blog/20211116113912.png)
+
+```go
+func flatten(root *TreeNode)  *TreeNode{
+
+    res := root
+    var max *TreeNode
+    
+    for root != nil {
+        if root.Left == nil {
+            root  = root.Right
+        }else{
+            max = root.Left
+            for max.Right != nil {
+                max = max.Right
+            }
+            root.Right,max.Right = root.Left,root.Right
+            root.Left = nil
+        }
+        
+    }
+    return res
+
 }
 ```
 
@@ -940,5 +974,63 @@ func dfs(node *TreeNode){
     dfs(node.Left)
     dfs(node.Right)
 } 
+```
+
+## 5. Morris 永久改变指针（破坏树结构）
+
+```go
+func inorderMorrisBreak(root *TreeNode) []int {
+	var res []int
+	var max *TreeNode
+	for root != nil {
+		if root.Left == nil {
+			res = append(res, root.Val) //中序遍历
+			root = root.Right           //链表移动
+		} else {
+			max = root.Left //寻找左树最大值
+			for max.Right != nil {
+				max = max.Right
+			}
+
+			//中序指针处理，root将在下一次循环输出
+			max.Right = root                 //左树最大值连接 root
+			root, root.Left = root.Left, nil //移到左节点，砍 root 左树
+		}
+	}
+	return res
+}
+```
+
+
+
+## 6. Morris 临时改变指针（保持树结构）
+
+```go 
+func preorderMorrisKeep(root *TreeNode) []int {
+	var res []int
+	var max *TreeNode
+	for root != nil {
+		if root.Left == nil {
+			res = append(res, root.Val) //左节点为空 前序遍历
+			root = root.Right           //移动到右节点
+		} else {
+			max = root.Left //找左树最大值
+			for max.Right != nil && max.Right != root {
+				max = max.Right
+			}
+
+			//前序指针处理
+			if max.Right == nil {
+				res = append(res, root.Val) //前序遍历
+				max.Right = root.Right      //指向
+				root = root.Left            //移动到左节点
+			} else { //已指向
+				root = root.Right //跳跃
+				max.Right = nil   //删指向
+			}
+		}
+	}
+	return res
+}
 ```
 
