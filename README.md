@@ -690,6 +690,58 @@ func TestRUn(t *testing.T)  {
 }
 ```
 
+
+
+### [116. 填充每个节点的下一个右侧节点指针](https://leetcode-cn.com/problems/populating-next-right-pointers-in-each-node/)
+
+思路:
+首先，每个节点的next原本就指向null。
+
+对于每个节点root，它的左孩子的next应改为指向它的右孩子（左右孩子肯定存在）。
+
+它的右孩子的next怎么找到右邻居呢？
+
+只要root.next存在（只要爸爸有右邻居），就能保证root.right有右邻居，让root.right.next指向root.next.left。如下图。
+
+![image.png](https://gitee.com/lzw657434763/pictures/raw/master/Blog/20211117110040.png)
+
+```go
+/**
+ * Definition for a Node.
+ * type Node struct {
+ *     Val int
+ *     Left *Node
+ *     Right *Node
+ *     Next *Node
+ * }
+ */
+func connect(root *Node) *Node {
+    if root == nil {
+        return nil
+    }
+	res := root
+    dfs(root)
+
+    return res
+}
+
+func dfs(root *Node){
+    if root.Left == nil {
+        return
+    }
+
+    root.Left.Next = root.Right
+    if root.Next != nil {
+        root.Right.Next = root.Next.Left
+    }
+
+    dfs(root.Left)
+    dfs(root.Right)
+}
+```
+
+
+
 ## 5. Morris遍历
 
 ### [114. 二叉树展开为链表](https://leetcode-cn.com/problems/flatten-binary-tree-to-linked-list/)
@@ -956,7 +1008,7 @@ func levelOrder(root *TreeNode) [][]int {
 
 
 
-## 4. 前序遍历
+## 4. 前序遍历/中序遍历/后序遍历
 
 ```go
 var res []int
@@ -970,9 +1022,14 @@ func dfs(node *TreeNode){
     if node == nil {
         return 
     }
+  	// 前序
     res = append(res,node.Val)
     dfs(node.Left)
+  	// 中序
+    res = append(res,node.Val)
     dfs(node.Right)
+  	// 后序
+    res = append(res,node.Val)
 } 
 ```
 
