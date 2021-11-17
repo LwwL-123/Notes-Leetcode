@@ -622,6 +622,59 @@ func maxDepth(root *TreeNode) int {
 
 
 
+### [117. 填充每个节点的下一个右侧节点指针 II](https://leetcode-cn.com/problems/populating-next-right-pointers-in-each-node-ii/)
+
+层次遍历后，拿一个二维数组记录层数和当前层的节点，后遍历二维数组，给Next赋值
+
+```go
+/**
+ * Definition for a Node.
+ * type Node struct {
+ *     Val int
+ *     Left *Node
+ *     Right *Node
+ *     Next *Node
+ * }
+ */
+
+func connect(root *Node) *Node {
+    res := [][]*Node{}
+    if root == nil {
+        return nil
+    }
+
+    //创建队列
+    queue := []*Node{}
+    queue = append(queue,root)
+
+    for len(queue) != 0 {
+        tmp := []*Node{}
+        lenth := len(queue)
+        for i := 0; i < lenth; i++ {
+            node := queue[i]
+            tmp = append(tmp,node)
+            if node.Left != nil {
+                queue = append(queue,node.Left)
+            }
+            if node.Right != nil {
+                queue = append(queue,node.Right)
+            }
+        }
+        queue = queue[lenth:]
+        res = append(res,tmp)
+    }
+
+    for i := 0;i < len(res); i++ {
+        for j := 0; j < len(res[i])-1; j++ {
+            res[i][j].Next = res[i][j+1]
+        }
+    }
+    return root
+}
+```
+
+
+
 ## 4. 深度遍历DFS
 
 ### [113. 路径总和 II](https://leetcode-cn.com/problems/path-sum-ii/)
