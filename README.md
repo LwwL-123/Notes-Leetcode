@@ -433,6 +433,39 @@ func dfs(nums []int) *TreeNode{
 }
 ```
 
+#### [129. 求根节点到叶节点数字之和](https://leetcode-cn.com/problems/sum-root-to-leaf-numbers/)
+
+```go
+/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */
+func sumNumbers(root *TreeNode) int {
+    return dfs(root,0)
+}
+
+func dfs(root *TreeNode,res int) int{
+    if root == nil {
+        return 0
+    }
+
+    res = res * 10 + root.Val
+    if root.Left==nil && root.Right == nil {
+        return res
+    }
+
+    return dfs(root.Left,res)+dfs(root.Right,res)
+}
+```
+
+
+
+
+
 
 
 ### 2.2 二叉树的高度
