@@ -10,4 +10,4 @@
 
 ## other
 
-- [树](https://github.com/LwwL-123/Notes-Leetcode/blob/main/other.md)
+- [other](https://github.com/LwwL-123/Notes-Leetcode/blob/main/other.md)
