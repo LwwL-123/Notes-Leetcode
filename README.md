@@ -4,5 +4,5 @@
 
 ## 树
 
-- [树](https://github.com/LwwL-123/Notes-Leetcode/树.md)
+- [树](https://github.com/LwwL-123/Notes-Leetcode/blob/main/树.md)
 
