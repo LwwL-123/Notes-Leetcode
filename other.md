@@ -16,3 +16,24 @@ func singleNumber(nums []int) int {
 }
 ```
 
+
+
+#### [7. 整数反转](https://leetcode-cn.com/problems/reverse-integer/)
+
+```go
+import "math"
+func reverse(x int) int {
+    res := 0
+    for x != 0 {
+        res = res * 10 + x % 10  
+        x= x / 10
+    }
+
+    if res <= math.MinInt32 || res >= math.MaxInt32 {
+		return 0
+	}
+
+    return res
+}
+```
+
